@@ -1,0 +1,34 @@
+{% extends "rentals/base.html" %}
+{% block title %}Confirm Booking{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+  <div class="bg-white rounded-2xl shadow p-6">
+    <h1 class="text-xl font-bold">Your trip</h1>
+    <dl class="mt-4 space-y-2 text-sm">
+      <div class="flex justify-between"><dt>Car</dt><dd class="font-medium">{{ car.name }}</dd></div>
+      <div class="flex justify-between"><dt>From</dt><dd>{{ start }}</dd></div>
+      <div class="flex justify-between"><dt>To</dt><dd>{{ end }}</dd></div>
+      <div class="flex justify-between"><dt>Days</dt><dd>{{ days }}</dd></div>
+      <div class="flex justify-between"><dt>Price per day</dt><dd>Rs. {{ car.price_per_day|floatformat:0 }}</dd></div>
+      <div class="flex justify-between border-t pt-2 text-base font-bold"><dt>Total</dt><dd>Rs. {{ total|floatformat:0 }}</dd></div>
+    </dl>
+  </div>
+
+  <form method="post" class="bg-white rounded-2xl shadow p-6 space-y-4">
+    {% csrf_token %}
+    <h2 class="text-xl font-bold">Driver details</h2>
+    {% for field in form %}
+      <div>
+        {% if field.name == "agree" %}
+          <label class="flex items-start gap-2 text-sm">{{ field }} <span>{{ field.label }}</span></label>
+        {% else %}
+          <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+          {{ field }}
+        {% endif %}
+        {% for error in field.errors %}<p class="text-sm text-red-600 mt-1">{{ error }}</p>{% endfor %}
+      </div>
+    {% endfor %}
+    <button class="w-full rounded-lg bg-amber-500 py-2.5 font-semibold text-slate-900 hover:bg-amber-400">Confirm booking</button>
+  </form>
+</div>
+{% endblock %}

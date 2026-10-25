@@ -1,0 +1,18 @@
+{% extends "rentals/base.html" %}
+{% block title %}Booking Confirmed{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-12">
+  <div class="bg-white rounded-2xl shadow p-8 text-center">
+    <div class="mx-auto h-14 w-14 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl">&#10003;</div>
+    <h1 class="mt-4 text-2xl font-bold">Booking confirmed</h1>
+    <p class="text-slate-500">Booking #{{ booking.id }}</p>
+    <dl class="mt-6 space-y-2 text-sm text-left">
+      <div class="flex justify-between"><dt>Car</dt><dd class="font-medium">{{ booking.car.name }}</dd></div>
+      <div class="flex justify-between"><dt>Dates</dt><dd>{{ booking.start_date }} to {{ booking.end_date }}</dd></div>
+      <div class="flex justify-between"><dt>Driver</dt><dd>{{ booking.driver_name }}</dd></div>
+      <div class="flex justify-between border-t pt-2 font-bold"><dt>Total</dt><dd>Rs. {{ booking.total_cost|floatformat:0 }}</dd></div>
+    </dl>
+    <a href="{% url 'my_bookings' %}" class="mt-6 inline-block rounded-lg bg-slate-900 px-5 py-2 text-white hover:bg-slate-700">View My Bookings</a>
+  </div>
+</div>
+{% endblock %}

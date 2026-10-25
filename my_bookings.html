@@ -1,0 +1,35 @@
+{% extends "rentals/base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+  <h1 class="text-2xl font-bold">My Bookings</h1>
+  {% if bookings %}
+  <div class="mt-6 overflow-x-auto bg-white rounded-2xl shadow">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-100 text-slate-600">
+        <tr><th class="p-3">#</th><th class="p-3">Car</th><th class="p-3">From</th><th class="p-3">To</th><th class="p-3">Total</th><th class="p-3">Status</th></tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr class="border-t">
+          <td class="p-3">{{ b.id }}</td>
+          <td class="p-3 font-medium">{{ b.car.name }}</td>
+          <td class="p-3">{{ b.start_date }}</td>
+          <td class="p-3">{{ b.end_date }}</td>
+          <td class="p-3">Rs. {{ b.total_cost|floatformat:0 }}</td>
+          <td class="p-3">
+            <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold {% if b.is_approved %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">{{ b.status }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="mt-6 rounded-xl bg-white p-8 text-center shadow">
+      <p>You have no bookings yet.</p>
+      <a href="{% url 'home' %}" class="mt-3 inline-block text-amber-600 font-semibold">Find a car</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "rentals/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+  <p class="text-slate-500">All bookings from all users</p>
+  <div class="mt-6 overflow-x-auto bg-white rounded-2xl shadow">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-slate-100 text-slate-600">
+        <tr>
+          <th class="p-3">#</th><th class="p-3">User</th><th class="p-3">Car</th>
+          <th class="p-3">From</th><th class="p-3">To</th><th class="p-3">Total</th>
+          <th class="p-3">Status</th><th class="p-3">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr class="border-t">
+          <td class="p-3">{{ b.id }}</td>
+          <td class="p-3">{{ b.user.username }}</td>
+          <td class="p-3 font-medium">{{ b.car.name }}</td>
+          <td class="p-3">{{ b.start_date }}</td>
+          <td class="p-3">{{ b.end_date }}</td>
+          <td class="p-3">Rs. {{ b.total_cost|floatformat:0 }}</td>
+          <td class="p-3">
+            <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold {% if b.is_approved %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">{{ b.status }}</span>
+          </td>
+          <td class="p-3">
+            {% if b.is_approved %}
+            <form method="post" action="{% url 'cancel_booking' b.id %}"
+                  onsubmit="return confirm('Cancel booking #{{ b.id }}?');">
+              {% csrf_token %}
+              <button class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-500">Cancel</button>
+            </form>
+            {% else %}<span class="text-slate-400">-</span>{% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" class="p-6 text-center text-slate-500">No bookings yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
